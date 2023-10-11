@@ -1,0 +1,36 @@
+﻿@page "/cipher"
+
+@using RyanWebApp.Client.Services
+
+@inject CipherServiceClient CipherService
+
+
+<h3>Cipher</h3>
+
+<input type="text" @bind="Token" placeholder="Enter token for decryption" />
+
+
+<input type="text" @bind="Message" placeholder="Enter message" />
+<button @onclick="EncryptMessage">Encrypt</button>
+<p>Encrypted Message: @EncryptedMessage</p>
+
+<input type="text" @bind="EncryptedMessage" placeholder="Enter encrypted message" />
+<button @onclick="DecryptMessage">Decrypt</button>
+<p>Decrypted Message: @Message</p>
+
+@code {
+    string? Token { get; set; }
+    string? Message { get; set; }
+    string? EncryptedMessage { get; set; }
+
+    async Task EncryptMessage()
+    {
+        EncryptedMessage = await CipherService.Encrypt(Message);
+    }
+
+    async Task DecryptMessage()
+    {
+        Message = await CipherService.Decrypt(EncryptedMessage, Token);
+    }
+
+}
